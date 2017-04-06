@@ -15,15 +15,21 @@ observer.observe(document.getElementById("contentArea"), {
 update()
 
 function pick_color(html) {
-	topics = ["trump", "liberal", "healthcare", "test"]
-	color = {"trump": ["donald trump", "trump", "mike pence", "fox news", "nationalreview.com"], 
-         "trump_color": "rgba(0, 0, 255, 0.1)", // blue
-		 "liberal": ["sanders", "progressive", "liberals"],
+	topics = ["cons", "liberal", "healthcare", "test", "climate"]
+	color = {"cons": ["donald trump", "trump", "mike pence", "fox news",
+					   "nationalreview.com", "breitbart", "melania", "liberal media",
+					   "obummer", "bannon", "ivanka"], 
+         "cons_color": "rgba(0, 0, 255, 0.1)", // blue
+		 "liberal": ["sanders", "progressive", "liberals", "resist", "democrat", "lago",
+		 			 "privacy", "abortion", "union", "livable wage", "minimum wage", "aclu"],
 		 "liberal_color": "rgba(255, 165, 0, 0.1)", //orange
-		 "healthcare": ["healthcare", "obamacare", "affordable care act",],
+		 "healthcare": ["healthcare", "obamacare", "affordable care act", "contraceptives",
+		 				"clinic", "abortion", "planned parenthood", "pills"],
 		 "healthcare_color": "rgba(0, 255, 0, 0.1)", //green
-		 "test": ["sublet", "apartment", "rent", "housing"],
-		 "test_color": "rgba(255, 0, 0, 0.1)"
+		 "test": ["sublet", "apartment", "rent", "housing", "bedroom"],
+		 "test_color": "rgba(255, 0, 0, 0.1)", //red
+		 "climate": ["global warming", "climate", "climate change", "ice caps", "weather"],
+		 "climate_color": "rgba(255, 0, 255, 0.1)",//teal
 		}
 
 	max_score = 0
@@ -53,19 +59,15 @@ function pick_color(html) {
 			max_score = score
 		}
 	}
-
-	console.log("300")
-
 	if(max_ind == -1) {
 		return -1
 	}
 	picked_color = topics[max_ind] + "_color"
-	console.log(picked_color)
 	return color[picked_color]
 }
 
 function update() {
-	run = document.getElementsByClassName("_4-u2 mbm _4mrt _5v3q _4-u8")
+	run = document.getElementsByClassName("_4-u2 mbm _4mrt")
 	for(count = 0; count < run.length; count++) {
 		if(run[count].getAttribute("cf_seen") == null){
 			run[count].setAttribute("cf_seen", true)
