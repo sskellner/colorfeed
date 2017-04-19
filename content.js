@@ -1,18 +1,15 @@
 MutationObserver = window.WebKitMutationObserver
 observer = new MutationObserver(function(mutations, observer) {update()});
 
-if(document.getElementById("contentArea") == null) {
-	// no content area yet
-
-}
-
-observer.observe(document.getElementById("contentArea"), {
+observer.observe(document.getElementsByClassName("_1qkq _1qkx")[0], {
             subtree: true,
             childList: true,
             attributes: false
         }); 
 
 update()
+
+chrome.storage.sync.clear()
 
 function insert_alpha(string, likes) {
 	alpha = 0.45
@@ -138,8 +135,74 @@ function pick_color(html) {
 	return insert_alpha(color[picked_color], -1)+"; box-shadow: 10px 0px 5px " + insert_alpha(shadow_color, likes)
 }
 
+function add_storage(element) {
+
+	auth = "EAACEdEose0cBAD50kHUDoFebBTTZBXC7FMVXujA4xPrUyyRwnQPv5iQozffwvuSuHzNv6ZAObF88Cd4WZCXMB3RPVwLT9GM0FyYuEEFjO9ev454mfJjf59rIbiyZAL6IpMBbPID3cAMPnZAzmIZCfgUoyntZB1BS8EN7rF6VzCppqLQfY2u4vMc"
+	categories = "Editor"+ "TV Network"+ "TV Show"+ "Public Figure"+ "Journalist"+ "News Personality"+
+						"Lawyer"+ "Business Person"+ "Entertainer"+ "Politician"+ "Government Official"+ "Media/News Company"+
+						"Industrials"+ "Education"+ "Political Organization"+ "Community/Government"+ "Political Party" + "News/Media Website"
+	n = element.getElementsByTagName("a")
+	for(i = 0; i < n.length; i++) {
+		link = n[i].getAttribute('href')
+		if(n[i].getAttribute("data-hovercard-obj-id") != null) {
+			//page
+			id = n[i].getAttribute("data-hovercard-obj-id")
+			// page_id: Flag whether we've seen it before
+			// page_id_valid: Whether it's a page we want to track
+			// page_id_count: How many times encountered before
+			chrome.storage.sync.get([String(id), String(id)+"_valid", String(id)+"_count"], function (results) {
+    			console.log("first")
+    			console.log(results)
+    			if(String(id) in results) {
+    				// Seen before
+    				if(results[String(id)+"_valid"]) {
+    					// we care about it
+    					curr = results[String(id)+"_count"]
+						curr += 1
+						results[String(id) + "_count"] = curr
+						chrome.storage.sync.set(results)
+    				}
+    				return
+    			}
+    			else {
+    				// Haven't seen before
+    				// Never seen page before
+					xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+					  if (this.readyState == 4 && this.status == 200) {
+					  	res = this.response
+						js = JSON.parse(res)
+						cat = js['category']
+						ked = categories.indexOf(cat)
+						json = {}
+						if(ked == -1) {
+							// not interested, skip and mark
+							json[String(id)+"_valid"] = false
+							json[String(id)] = true
+							chrome.storage.sync.set(json)
+							return
+						}
+						else{
+							json[String(id)] = true
+							json[String(id)+"_valid"] = true
+							json[String(id)+"_count"] = 1
+							chrome.storage.sync.set(json)
+						}
+					  }
+					};
+					xhttp.open("GET", "https://graph.facebook.com/"+id+"?fields=category,about,description&access_token="+auth, true);
+					xhttp.send();
+    			}
+			})
+		}
+	}
+	chrome.storage.sync.get(null, function(res) {
+		console.log(res)
+	})
+}
+
 function update() {
-	run = document.getElementsByClassName("_4-u2 mbm _4mrt")
+	run = document.getElementsByClassName("_1dwg _1w_m")
 
 	for(count = 0; count < run.length; count++) {
 		if(run[count].getAttribute("cf_seen") == null){
@@ -148,13 +211,14 @@ function update() {
 		else{
 			continue
 		}
-		s = pick_color(run[count])
-		if (s == -1) {
-			// No color
-			continue
-		}
-		run[count].setAttribute("style",
-			"border-right:20px solid " + s)
+		t = add_storage(run[count])
+		// s = pick_color(run[count])
+		// if (s == -1) {
+		// 	// No color
+		// 	continue
+		// }
+		// run[count].setAttribute("style",
+		// 	"border-right:20px solid " + s)
 	}
 	return
 }
