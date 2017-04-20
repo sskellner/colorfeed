@@ -270,12 +270,12 @@ function style2(node, color, freq, alt_url1, alt_url2) {
 	header = document.createElement("h1")
 	str = String(freq)
 	percent = str.substring(2, 4)+"."+str.substring(4,6)
-	header.textContent = "The following article and source have occured "+ percent+"% of the time."
+	header.textContent = "This source appears in your News Feed "+ percent+"% of the time."
 	inside.append(header)
 	inside.append(document.createElement("br"))
 
 	header = document.createElement("h1")
-	header.textContent = "Check out some similar-minded content:"
+	header.textContent = "Check out some more related sources:"
 	inside.append(header)
 	inside.append(document.createElement("br"))
 
