@@ -137,7 +137,7 @@ function pick_color(html) {
 
 function add_storage(element) {
 
-	auth = "EAACEdEose0cBAD50kHUDoFebBTTZBXC7FMVXujA4xPrUyyRwnQPv5iQozffwvuSuHzNv6ZAObF88Cd4WZCXMB3RPVwLT9GM0FyYuEEFjO9ev454mfJjf59rIbiyZAL6IpMBbPID3cAMPnZAzmIZCfgUoyntZB1BS8EN7rF6VzCppqLQfY2u4vMc"
+	auth = ""
 	categories = "Editor"+ "TV Network"+ "TV Show"+ "Public Figure"+ "Journalist"+ "News Personality"+
 						"Lawyer"+ "Business Person"+ "Entertainer"+ "Politician"+ "Government Official"+ "Media/News Company"+
 						"Industrials"+ "Education"+ "Political Organization"+ "Community/Government"+ "Political Party" + "News/Media Website"
@@ -201,8 +201,126 @@ function add_storage(element) {
 	})
 }
 
+function pick_color2(node){
+	low_freq = ["#0FFCE0",
+				"#FFA00D",
+				"#FEFF1F",
+				"#7E42FF",
+				"#E8E80A",
+				"#FF5300",
+				"#CC14B7",
+				"#FFDD4C",
+				"#4CF8A8",
+				"#D148FA",
+				"#F45398",
+				"#FA237F",
+				"#A0FC33",
+				"#01C91B",
+				"#FFCE00",
+				"#02FE52",]
+	high_freq = ['#AD9AA5',
+				'#BEA0CC',
+				'#BAB592',
+				'#A2BFA0',
+				'#B8CF90',
+				'#D1F7FA',
+				'#BFA0B2',
+				'#54B7BF',
+				'#99BCAF',
+				'#BCD0EF',
+				'#ABB8D7',
+				'#839BBF',
+				'#83BFA2',
+				'#B29783',
+				'#A9D6B3',
+				'#B0AAC2',]
+
+
+
+
+
+}
+
+function style2(node, color, freq, alt_url1, alt_url2) {
+	//alt_url is a list [icon_url, fb_url]
+	// Color: hexcode 0x######
+// 	<div class="dropdown">
+//   <button class="dropbtn">Dropdown</button>
+//   <div class="dropdown-content">
+//     <a href="#">Link 1</a>
+//     <a href="#">Link 2</a>
+//     <a href="#">Link 3</a>
+//   </div>
+// </div>
+	element = document.createElement("div")
+	element.className = "dropdown"
+	btn = document.createElement("button")
+	btn.className = "dropbtn"
+	btn.style.backgroundColor = color
+	btn.textContent="Colorfeed"
+	element.appendChild(btn)
+
+	inside = document.createElement("div")
+	inside.className="dropdown-content"
+	inside.style="padding:10px;width:200%"
+	element.appendChild(inside)
+
+	// Add shit in here
+
+	header = document.createElement("h1")
+	str = String(freq)
+	percent = str.substring(2, 4)+"."+str.substring(4,6)
+	header.textContent = "The following article and source have occured "+ percent+"% of the time."
+	inside.append(header)
+	inside.append(document.createElement("br"))
+
+	header = document.createElement("h1")
+	header.textContent = "Check out some similar-minded content:"
+	inside.append(header)
+	inside.append(document.createElement("br"))
+
+	others = document.createElement("div")
+	others.style="width:100%"
+	inside.append(others)
+
+	child1 = document.createElement("div")
+	child1_center = document.createElement("center")
+	child1.append(child1_center)
+	child2 = document.createElement("div")
+	child2_center = document.createElement("center")
+	child2.append(child2_center)
+
+	others.appendChild(child1)
+	others.appendChild(child2)
+
+	child1.style="display:inline-block;align:center;width:50%"
+	child2.style="display:inline-block;align:center;width:50%"
+
+	link1 = document.createElement("a")
+	child1_center.append(link1)
+	inner_im1 = document.createElement("img")
+	link1.append(inner_im1)
+
+	link2 = document.createElement("a")
+	child2_center.append(link2)
+	inner_im2 = document.createElement("img")
+	link2.append(inner_im2)
+
+	inner_im1.src = alt_url1[0]
+	inner_im2.src = alt_url2[0]
+	link1.href = alt_url1[1]
+	link1.target="_blank"
+	link2.href = alt_url2[1]
+	link2.target="_blank"
+	inner_im1.style="width:50%"
+	inner_im2.style="width:50%"
+
+
+	node.prepend(element)
+}
+
 function update() {
-	run = document.getElementsByClassName("_1dwg _1w_m")
+	run = document.getElementsByClassName("_4-u2 mbm _4mrt _5v3q _4-u8")
 
 	for(count = 0; count < run.length; count++) {
 		if(run[count].getAttribute("cf_seen") == null){
@@ -211,7 +329,12 @@ function update() {
 		else{
 			continue
 		}
-		t = add_storage(run[count])
+		t = ["https://scontent.fsnc1-5.fna.fbcdn.net/v/t1.0-1/c64.14.172.172/p200x200/1236510_161973027337310_1766669790_n.jpg?oh=035bfcc61de52d4526a4459fe326aa9e&oe=59824E9D",
+			"https://www.facebook.com/sherifinkbooks/"]
+		s = ["https://scontent.fsnc1-5.fna.fbcdn.net/v/t1.0-1/p200x200/14117747_632351770280035_6486249289685619428_n.png?oh=049c61d2e14382654a1acff4b65b31d1&oe=5983DCF6",
+			"https://www.facebook.com/shareblue/"]
+		style2(run[count], "#AD9AA5", .0139, t, s)
+		// t = add_storage(run[count])
 		// s = pick_color(run[count])
 		// if (s == -1) {
 		// 	// No color

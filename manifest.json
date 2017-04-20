@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Colorfeed",
+  "description": "Colorful",
   "version": "1.0",
 
   "browser_action": {
@@ -22,7 +22,9 @@
       "matches": [
         "https://www.facebook.com/*"
       ],
-      "js": ["content.js", "jquery.js"]
+      "css": ["css/bootstrap.css", "css/dropdown.css"],
+      "js": ["js/bootstrap.js", "content.js", "jquery.js"]
     }
-  ]
+  ], 
+  "web_accessible_resources": ["css/*", "js/*"]
 }
